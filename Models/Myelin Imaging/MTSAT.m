@@ -32,5 +32,19 @@ classdef MTSAT
             FitResult = MTSAT_exec(data, MTparams, PDparams, T1params);
         end
         
+        function plotmodel(obj, Fit, data)
+            % data to plot is in : Fit.(Fit.fields{1})
+            
+            NDimensions = ndims(Fit.(Fit.fields{1}));
+            if NDimensions == 1 
+                close(68); % simply display values or image
+            elseif NDimensions == 2
+                % carefull when dimensions is (1x1), still a value so don't
+                % display
+                imagesc(Fit.(Fit.fields{1}));
+            end
+            
+        end
+        
     end
 end
