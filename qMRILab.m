@@ -156,6 +156,10 @@ end
 
 for i=1:MethodCount
     FileBrowserList(i).Visible('off');
+    % reset fileboc content and data
+    FileBrowserList(i).ResetFileBox();
+    Data = '';
+    SetAppData(Data);
 end
 
 % Create browser panel buttons
@@ -176,6 +180,8 @@ if strcmp(FileBrowserList(MethodNum).GetMethod, 'unassigned')
 	% create file browser uicontrol with specific inputs
     FileBrowserList(MethodNum) = MethodBrowser(handles.FitDataFileBrowserPanel,handles,{Method MRIinputs{:}});
 end
+
+
 
 FileBrowserList(MethodNum).Visible('on');
 SetAppData(FileBrowserList);

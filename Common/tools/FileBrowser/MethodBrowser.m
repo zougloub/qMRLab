@@ -103,6 +103,16 @@ classdef MethodBrowser < handle
         end
         
         %------------------------------------------------------------------
+        % ResetFileBox - empty previously displayed file names
+        function ResetFileBox(obj)
+            set(obj.WorkDir_FileNameArea, 'string', '');
+            set(obj.StudyID_TextArea, 'string', '');
+            for i=1:obj.NbItems
+                obj.ItemsList(i).ResetFileNames();
+            end
+        end
+        
+        %------------------------------------------------------------------
         % SetFullPath
         function setFullPath(obj)
             Path = obj.WorkDir_FullPath;

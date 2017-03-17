@@ -142,8 +142,13 @@ classdef BrowserSet < handle
                     set(obj.FileBox, 'String', obj.FullFile);
                     obj.DataLoad();
                 end
-            end
-            
+            end 
+        end
+        
+        %------------------------------------------------------------------
+        % -- ResetFileNames
+        function ResetFileNames(obj)
+            set(obj.FileBox, 'string', '');
         end
     end
     
