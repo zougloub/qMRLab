@@ -112,7 +112,7 @@ if Model.voxelwise % process voxelwise
     
 else % process entire volume
     Fit = Model.fit(data);
-    Fit.fields = fieldnames(Fit);
+    % managed in MTSAT_exec function : Fit.fields = fieldnames(Fit);
 end
 Fit.Time = toc
 Fit.Protocol = Model.Prot;
