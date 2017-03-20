@@ -62,9 +62,11 @@ end
 
 set(handles.ProtFormat,'String',strjoin(Model.ProtFormat))
 set(handles.tableProt,'ColumnName',Model.ProtFormat(:))
-% if class is MTSAT, put row names to ID MRI input protocol info
+% if class is MTSAT, put row names to ID MRI input protocol info, make
+% editable
 if strcmp(class(Model), 'MTSAT')
     set(handles.tableProt,'RowName', Model.MRIinputs(1:3));
+    set(handles.tableProt, 'ColumnEditable', logical(1));
 end
 set(handles.tableProt,'Data',Model.Prot)
 

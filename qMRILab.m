@@ -53,6 +53,12 @@ MethodList = {}; SetAppData(MethodList);
 handles.output = hObject;
 guidata(hObject, handles);
 
+% Load MTSAT colormap
+MTSATmap = load(strcat(qMRILabDir, '/MTSATmap.mat'));
+MTSATmap = MTSATmap.MTSATmap;
+SetAppData(MTSATmap);
+
+
 % LOAD DEFAULTS
 load(fullfile(handles.root,'Common','Parameters','DefaultMethod.mat'));
 
@@ -1062,7 +1068,12 @@ DrawPlot(handles);
 function ColorMapStyle_Callback(hObject, eventdata, handles)
 val  =  get(handles.ColorMapStyle, 'Value');
 maps =  get(handles.ColorMapStyle, 'String');
-colormap(maps{val});
+if strcmp(maps{val}, 'MTSATmap') ~= 0 
+    MTSATmap = GetAppData('MTSATmap');
+    colormap(MTSATmap);
+else 
+    colormap(maps{val});
+end
 
 function Auto_Callback(hObject, eventdata, handles)
 GetPlotRange(handles);
