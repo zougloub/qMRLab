@@ -1,0 +1,5 @@
+% MTSAT Protocol 
+% Flip angle        TR
+6   0.027
+6   0.027
+20  0.018

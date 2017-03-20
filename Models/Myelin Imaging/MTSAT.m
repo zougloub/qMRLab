@@ -9,7 +9,7 @@ classdef MTSAT
         
         % Protocol
         ProtFormat ={'Flip Angle' 'TR'};
-        Prot  = [5 0.031; 5 0.031; 15 0.011]; % You can define a default protocol here.
+        Prot  = [6 0.027; 6 0.027; 20 0.018]; % default protocol
         
         % Model options
         buttons = {'offset frequency (Hz)', 1000};
@@ -20,13 +20,16 @@ classdef MTSAT
     methods
         function obj = MTSAT
             obj = button2opts(obj);
-        end
+            end
         
         function FitResult = fit(obj,data)
+            % update protocol parameters from interface table
             MTparams = obj.Prot(1,:); 
             MTparams(1,1) = MTparams(1,1)*pi()/180; % FA in rad
-            PDparams = obj.Prot(2,:); 
+            PDparams = obj.Prot(2,:);
+            PDparams(1,1) = PDparams(1,1)*pi()/180; % FA in rad
             T1params = obj.Prot(3,:);
+            T1params(1,1) = T1params(1,1)*pi()/180; % FA in rad
             
             FitResult = MTSAT_exec(data, MTparams, PDparams, T1params);
             
