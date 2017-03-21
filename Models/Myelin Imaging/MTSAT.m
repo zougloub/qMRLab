@@ -31,7 +31,15 @@ classdef MTSAT
             T1params = obj.Prot(3,:);
             T1params(1,1) = T1params(1,1)*pi()/180; % FA in rad
             
-            FitResult = MTSAT_exec(data, MTparams, PDparams, T1params);
+            EmptyProt = transpose([transpose([0,0]), transpose([0,0]), transpose([0,0])]);
+            if ~(obj.Prot == EmptyProt)
+                FitResult = MTSAT_exec(data, MTparams, PDparams, T1params);
+            else
+                fields = {'computed'}; 
+                FitResult.fields = fields;
+                FitResult.(fields{1}) = 0;
+                msgbox('Empty Protocol', 'modal');
+            end
             
             % change colormap for custom MTSAT colormap
             % ColorMapStyle_Callback: colormap(maps{val})

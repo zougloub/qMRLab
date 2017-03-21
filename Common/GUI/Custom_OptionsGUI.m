@@ -67,7 +67,17 @@ set(handles.tableProt,'ColumnName',Model.ProtFormat(:))
 if strcmp(class(Model), 'MTSAT')
     set(handles.tableProt,'RowName', Model.MRIinputs(1:3));
     set(handles.tableProt, 'ColumnEditable', logical(1));
+    handles.tableProt.CellEditCallback = @ProtOptTable_CellEditCallback;
+    TableProt = handles.tableProt;
+    setappdata(0,'TableProt', TableProt);
+    
+    % if there is not loaded protocol, fill table with 0 to allow the table
+    % to be editable
+    if isempty(Model.Prot) 
+        Model.Prot = transpose([transpose([0,0]), transpose([0,0]), transpose([0,0])]);
+    end
 end
+
 set(handles.tableProt,'Data',Model.Prot)
 
 
@@ -176,6 +186,13 @@ SetOpt(handles);
 
 function FitOptTable_CreateFcn(hObject, eventdata, handles)
 
+
+function ProtOptTable_CellEditCallback(hObject, eventdata, handles)
+    TableProt = getappdata(0, 'TableProt');
+    TableProt.Data = hObject.Data;
+    setappdata(0, 'TableProt', TableProt);
+
+
 % #########################################################################
 %                           PROTOCOL PANEL
 % #########################################################################
@@ -186,7 +203,8 @@ function ProtLoad_Callback(hObject, eventdata, handles)
 if PathName == 0, return; end
 fullfilepath = [PathName, FileName];
 Prot = ProtLoad(fullfilepath);
-set(handles.tableProt,'Data',Prot)
+set(handles.tableProt,'Data',Prot);
+
 set(handles.ProtFileName,'String',FileName);
 
 % #########################################################################

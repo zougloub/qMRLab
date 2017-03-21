@@ -130,7 +130,7 @@ function MethodMenu_Callback(hObject, eventdata, handles,Method)
 SetAppData(Method)
 set(handles.MethodMenu,'String',Method)
 handles.method = fullfile(handles.root,'Models_Functions',[Method 'fun']);
-if ismember(Method,{'bSSFP','SIRFSE','SPGR'})
+if ismember(Method,{'bSSFP','SIRFSE','SPGR', 'MTSAT'})
     set(handles.uipanel35,'Visible','on') % show the simulation panel
     PathName = fullfile(handles.method,'Parameters');
     LoadDefaultOptions(PathName);
@@ -955,6 +955,9 @@ if ismember(Method,{'bSSFP','SIRFSE','SPGR'})
     FitResults = FitData(data,Prot,FitOpt,Method,1);
 else
     Model = getappdata(0,'Model');
+%     if Model, 'MTSAT')
+    tableProt = GetAppData('TableProt');
+    Model.Prot = tableProt.Data;
     FitResults = FitDataCustom(data,Model,1);
     FitResults.Model = Model;
 end
@@ -997,10 +1000,14 @@ for i = 1:length(FitResults.fields)
     map = FitResults.fields{i};
     file = strcat(map,'.nii');
     [~,~,ext]=fileparts(mainfile);
-    if strcmp(ext,'.mat')
-        save_nii_v2(make_nii(FitResults.(map)),fullfile(FitResults.WD,'FitResults',file),[],64);
-    else
-        save_nii_v2(FitResults.(map),fullfile(FitResults.WD,'FitResults',file),mainfile,64);
+    nDimensions = ndims(FitResults.(map));
+    FitSize = size(FitResults.(map));
+    if ~(nDimensions == 2 && FitSize(1) == 1 && FitSize(2) == 1)
+        if strcmp(ext,'.mat')
+            save_nii_v2(make_nii(FitResults.(map)),fullfile(FitResults.WD,'FitResults',file),[],64);
+        else
+            save_nii_v2(FitResults.(map),fullfile(FitResults.WD,'FitResults',file),mainfile,64);
+        end
     end
 end
 
@@ -1071,6 +1078,7 @@ maps =  get(handles.ColorMapStyle, 'String');
 if strcmp(maps{val}, 'MTSATmap') ~= 0 
     MTSATmap = GetAppData('MTSATmap');
     colormap(MTSATmap);
+    ax = gca;
 else 
     colormap(maps{val});
 end
