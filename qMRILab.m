@@ -1080,6 +1080,7 @@ if strcmp(maps{val}, 'MTSATmap') ~= 0
     MTSATmap = GetAppData('MTSATmap');
     colormap(MTSATmap);
     ax = gca;
+    caxis([-0.35, 5.0]);
 else 
     colormap(maps{val});
 end
