@@ -955,9 +955,10 @@ if ismember(Method,{'bSSFP','SIRFSE','SPGR'})
     FitResults = FitData(data,Prot,FitOpt,Method,1);
 else
     Model = getappdata(0,'Model');
-%     if Model, 'MTSAT')
-    tableProt = GetAppData('TableProt');
-    Model.Prot = tableProt.Data;
+    if strcmp(cellstr(Method), 'MTSAT')
+        tableProt = GetAppData('TableProt');
+        Model.Prot = tableProt.Data;
+    end
     FitResults = FitDataCustom(data,Model,1);
     FitResults.Model = Model;
 end
