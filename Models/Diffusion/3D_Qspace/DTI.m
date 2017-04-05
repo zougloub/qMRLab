@@ -1,14 +1,14 @@
 classdef DTI
     properties
-        MRIinputs = {'MTdata','Mask'};
+        MRIinputs = {'Diffusiondata','Mask'};
         xnames = { 'FA','L1','L2','L3'};
         voxelwise = 1;
 
         % fitting options
-        st           =  [  0.7	0.5    0.5	 0.5]; % starting point
-        lb            = [  0       0       0       0]; % lower bound
-        ub           = [ 1        3       3       3]; % upper bound
-        fx            = [ 0        0        0       0]; % fix parameters
+        st           = []; %[ 0.7	0.5    0.5	 0.5]; % starting point
+        lb            = []; %[  0       0       0       0]; % lower bound
+        ub           = []; %[ 1        3       3       3]; % upper bound
+        fx            = [ ]; %0        0        0       0]; % fix parameters
         
         % Protocol
         ProtFormat ={'Gx' 'Gy'  'Gz'   '|G|'  'Delta'  'delta'  'TE'}; 
@@ -30,8 +30,9 @@ classdef DTI
         end
         
         function FitResults = fit(obj,data)
+            if isempty(obj.Prot) || size(obj.Prot,1)~=length(data.Diffusiondata(:)), errordlg('Load a valid protocol'); FitResults=[]; return; end
             Prot = ConvertSchemeUnits(obj.Prot);
-            data = data.MTdata;
+            data = data.Diffusiondata;
             % fit
             D=scd_model_dti(data./scd_preproc_getIb0(data,Prot),Prot);
             [~,L]=eig(D); L = sort(diag(L),'descend');
@@ -46,7 +47,8 @@ classdef DTI
         end
         
         function plotmodel(obj, FitResults, data)
-            data = data.MTdata;
+            if isempty(FitResults), return; end
+            data = data.Diffusiondata;
             % Prepare inputs
             Prot = ConvertSchemeUnits(obj.Prot);
             
