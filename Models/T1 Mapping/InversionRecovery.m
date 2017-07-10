@@ -80,7 +80,7 @@ classdef InversionRecovery
             if ~exist('display','var'), display=1; end
             Smodel = equation(obj, x);
             sigma = max(Smodel)/SNR;
-            data.IRData = random('rician',Smodel,sigma);
+            data.IRData = sign(Smodel).*random('rician',abs(Smodel),sigma);
             FitResults = fit(obj,data);
             if display
                 plotmodel(obj, FitResults, data);
