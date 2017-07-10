@@ -88,7 +88,7 @@ SNR = str2double(get(handles.options.SNR,'String'));
 
 if get(handles.options.holdPlot,'value'), hold on; end
 FitResults = Sim_Single_Voxel_Curve(handles.Model,x,SNR);
-F = SimCRLB(handles.Model,handles.Model.Prot.DiffusionData.Mat,x,1/SNR);
+%F = SimCRLB(handles.Model,handles.Model.Prot.DiffusionData.Mat,x,1/SNR);
 hold off;
 
 % put results in table
@@ -103,10 +103,10 @@ for ii=1:length(ff)
         xtable{end,3} = FitResults.(ff{ii})(1);
     end
 end
-for ii=1:sum(~handles.Model.fx)
-    ll=find(~handles.Model.fx);
-    xtable{ll(ii),5}=F(ii)*100;
-end
+% for ii=1:sum(~handles.Model.fx)
+%     ll=find(~handles.Model.fx);
+%     xtable{ll(ii),5}=F(ii)*100;
+% end
 set(handles.ParamTable,'Data',xtable);
 set(findobj('Name','SimCurve'),'pointer', 'arrow'); drawnow;
 
