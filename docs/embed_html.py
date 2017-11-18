@@ -11,8 +11,11 @@ else:
 
 class MyHTMLParser(HTMLParser):
 	"""
-	Matlab HTML parser that extracts the useful HTML payload,
+	Ad-hoc Matlab HTML parser that extracts the useful HTML payload,
 	insertable in an existing HTML document.
+
+	It looks like everything in the first <div> is desired.
+	The image content is copied to the destination directory.
 	"""
 	def __init__(self, out, dstdir, srcdir):
 		HTMLParser.__init__(self)
@@ -71,7 +74,8 @@ if __name__ == "__main__":
 			data = fi.read().decode("utf-8")
 
 			# This is taken from the Matlab HTML stylesheet, but scoped
-			sbuf = io.StringIO(u"""<style type="text/css">
+			sbuf = io.StringIO()
+			sbuf.write(u"""<style type="text/css">
 .content { font-size:1.2em; line-height:140%; padding: 20px; }
 .content p { padding:0px; margin:0px 0px 20px; }
 .content img { padding:0px; margin:0px 0px 20px; border:none; }
